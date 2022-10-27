@@ -1,63 +1,48 @@
 package pl.coderslab;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.WebApplicationContext;
+
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Component
-@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class MockBookService {
-    private static List<Book> books = new ArrayList<>();
+public class MockBookService implements BookService{
+    private List<Book> books;
+    private static Long nextId = 4L;
+
 
     public MockBookService() {
+        books = new ArrayList<>();
+        books.add(new Book(1L, "9788324631766", "Thinking in Java", "Bruce Eckel", "Helion", "programming"));
+        books.add(new Book(2L, "1234567", "Harry Potter and Philosopher Stone", "J.K.Rowling", "Egmont", "Bestseller"));
+        books.add(new Book(3L, "123456789", "Harry Potter and Chamber of Secrets", "J.K.Rowling", "Egmont", "Bestseller"));
+
     }
 
-    public static void addToBooks(Book book) {
+    public void add(Book book) {
+        book.setId(nextId++);
         books.add(book);
     }
 
-    public static List<Book> findAllBooks() {
-        return books;
-    }
-
-    public static Book showBook(Long id) {
+    public Optional<Book> get(Long id) {
         for (Book book : books) {
             if (book.getId() == id) {
-                return book;
+                return Optional.of(book);
             }
         }
         return null;
     }
-
-    public static void removeBook(Long id) {
-        for (Book book : books) {
-            if (book.getId() == id) {
-                books.remove(book);
-            }
-        }
-        System.out.println("Nie istnieje id");
+    public void delete(Long id) {
+        books.removeIf(book -> (book.getId() == id));
     }
 
-    public static void updateBook(Book book) {
-
-        for (Book booki : books) {
-            if (booki.getId() == book.getId()) {
-                booki.setId(book.getId());
-                booki.setIsbn(book.getIsbn());
-                booki.setTitle(book.getTitle());
-                booki.setAuthor(book.getAuthor());
-                booki.setPublisher(book.getPublisher());
-                booki.setType(book.getType());
-                books.add(booki);
-            }
-        }
+    public void update(Book book) {
+        int id = books.indexOf(book.getId());
+        books.set(id, book);
     }
-
 
     public List<Book> getBooks() {
         return books;

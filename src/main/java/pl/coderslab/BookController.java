@@ -1,14 +1,21 @@
 package pl.coderslab;
 
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
 @RequestMapping("/books")
 public class BookController {
+
+    private BookService bookService ;
+
+    public BookController(BookService bookService) {
+
+        this.bookService = bookService;
+    }
+
 
     @RequestMapping("/helloBook")
     public Book helloBook() {
@@ -17,31 +24,28 @@ public class BookController {
 
     @GetMapping("")
     public List<Book> allBooks() {
-        List<Book> books = MockBookService.findAllBooks();
-        return books;
+        return bookService.getBooks();
     }
 
     @PostMapping("")
-    public void addBook(@RequestParam Book book) {
-
-        MockBookService.addToBooks(book);
+    public void addBook(@RequestBody Book book) {
+        bookService.add(book);
     }
 
     @GetMapping("/{id}")
-    public Book readBook(@PathVariable Long id) {
+    public Optional<Book> readBook(@PathVariable Long id) {
 
-        return MockBookService.showBook(id);
+        return bookService.get(id);
     }
 
-//    @PutMapping Mapping("/{id}")
-//    public Book updateIdBook(@PathVariable Long id) {
-//
-//        return MockBookService.updateBook(id);
-//    }
+    @PutMapping ("")
+    public void updateIdBook(@RequestBody Book book) {
+        bookService.update(book);
+    }
 
     @DeleteMapping("/{id}")
     public void deleteBook(@PathVariable Long id) {
-        MockBookService.removeBook(id);
+        bookService.delete(id);
     }
 
 }
