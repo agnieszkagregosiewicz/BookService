@@ -1,6 +1,9 @@
-package pl.coderslab;
+package pl.coderslab.controllers;
 
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.model.Book;
+import pl.coderslab.services.BookService;
+
 import java.util.List;
 import java.util.Optional;
 

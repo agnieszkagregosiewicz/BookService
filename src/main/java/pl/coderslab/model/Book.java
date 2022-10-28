@@ -1,8 +1,9 @@
-package pl.coderslab;
+package pl.coderslab.model;
 
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 
 @Component
@@ -13,7 +14,9 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String isbn;
+    @NotEmpty
     private String title;
+    @NotEmpty
     private String author;
     private String publisher;
     private String type;

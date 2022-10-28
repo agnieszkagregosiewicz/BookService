@@ -1,7 +1,8 @@
-package pl.coderslab;
+package pl.coderslab.services;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import pl.coderslab.model.Book;
 import pl.coderslab.repository.BookRepository;
 
 import java.util.List;
@@ -24,21 +25,21 @@ public class JpaBookService implements BookService {
 
     @Override
     public void add(Book book) {
-
+        bookRepository.save(book);
     }
 
     @Override
     public Optional<Book> get(Long id) {
-        return Optional.empty();
+        return bookRepository.findById(id);
     }
 
     @Override
     public void delete(Long id) {
-
+        bookRepository.deleteBookById(id);
     }
 
     @Override
     public void update(Book book) {
-
+        bookRepository.save(book);
     }
 }
